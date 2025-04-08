@@ -8,26 +8,30 @@ async function seed() {
   try {
     // Clear existing data
     console.log("Clearing existing data...");
-    
+
     // Add profile data
     console.log("Adding profile data...");
-    await db.insert(profile).values({
-      name: "John Doe",
-      title: "Full Stack Developer",
-      bio: "Passionate developer with expertise in React, Next.js, and Node.js. I love building beautiful, responsive web applications with great user experiences.",
-      avatar: "/images/avatar.jpg",
-      email: "john@example.com",
-      github: "https://github.com/johndoe",
-      linkedin: "https://linkedin.com/in/johndoe",
-      twitter: "https://twitter.com/johndoe",
-    }).onConflictDoUpdate({
-      target: profile.id,
-      set: {
+    await db
+      .insert(profile)
+      .values({
+        userId: "default-user-id", // Adding required userId field
         name: "John Doe",
         title: "Full Stack Developer",
         bio: "Passionate developer with expertise in React, Next.js, and Node.js. I love building beautiful, responsive web applications with great user experiences.",
-      }
-    });
+        avatar: "/images/avatar.jpg",
+        email: "john@example.com",
+        github: "https://github.com/johndoe",
+        linkedin: "https://linkedin.com/in/johndoe",
+        twitter: "https://twitter.com/johndoe",
+      })
+      .onConflictDoUpdate({
+        target: profile.id,
+        set: {
+          name: "John Doe",
+          title: "Full Stack Developer",
+          bio: "Passionate developer with expertise in React, Next.js, and Node.js. I love building beautiful, responsive web applications with great user experiences.",
+        },
+      });
 
     // Add skills
     console.log("Adding skills data...");
@@ -49,17 +53,25 @@ async function seed() {
     const projectsData = [
       {
         title: "E-commerce Platform",
-        description: "A full-featured e-commerce platform built with Next.js, Stripe, and PostgreSQL.",
+        description:
+          "A full-featured e-commerce platform built with Next.js, Stripe, and PostgreSQL.",
         image: "/images/projects/ecommerce.jpg",
         demoUrl: "https://ecommerce-demo.example.com",
         githubUrl: "https://github.com/johndoe/ecommerce",
-        technologies: ["Next.js", "React", "PostgreSQL", "Stripe", "Tailwind CSS"],
+        technologies: [
+          "Next.js",
+          "React",
+          "PostgreSQL",
+          "Stripe",
+          "Tailwind CSS",
+        ],
         featured: true,
         order: 1,
       },
       {
         title: "Task Management App",
-        description: "A collaborative task management application with real-time updates.",
+        description:
+          "A collaborative task management application with real-time updates.",
         image: "/images/projects/taskapp.jpg",
         demoUrl: "https://tasks-demo.example.com",
         githubUrl: "https://github.com/johndoe/taskapp",

@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
 
     // Filter by published status if specified
     if (published === "true") {
+      // @ts-expect-error: Cannot invoke an object which is possibly 'null'.
       query = query.where(eq(blogPosts.published, true));
     }
 
