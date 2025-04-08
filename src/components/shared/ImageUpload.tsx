@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, X, Loader2 } from "lucide-react";
+import Image from "next/image";
 
 interface ImageUploadProps {
   value: string;
@@ -12,7 +13,11 @@ interface ImageUploadProps {
   label?: string;
 }
 
-export function ImageUpload({ value, onChange, label = "Image" }: ImageUploadProps) {
+export function ImageUpload({
+  value,
+  onChange,
+  label = "Image",
+}: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,12 +71,12 @@ export function ImageUpload({ value, onChange, label = "Image" }: ImageUploadPro
   return (
     <div className="space-y-2">
       <Label>{label}</Label>
-      
+
       {value ? (
         <div className="relative">
-          <img 
-            src={value} 
-            alt="Uploaded image" 
+          <Image
+            src={value}
+            alt="Uploaded image"
             className="max-h-64 rounded-md border object-contain w-full"
           />
           <Button
@@ -117,9 +122,9 @@ export function ImageUpload({ value, onChange, label = "Image" }: ImageUploadPro
           </div>
         </div>
       )}
-      
+
       {error && <p className="text-sm text-destructive">{error}</p>}
-      
+
       <div className="flex items-center gap-2">
         <Input
           value={value}
