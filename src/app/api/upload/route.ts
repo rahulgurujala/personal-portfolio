@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       );
     });
 
-    // @ts-ignore
+    // @ts-expect-error - Cloudinary upload result type is not properly typed
     return NextResponse.json({ success: true, url: result.secure_url });
   } catch (error) {
     console.error("Error uploading image:", error);

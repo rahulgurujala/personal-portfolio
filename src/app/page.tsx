@@ -63,7 +63,11 @@ export default async function HomePage() {
                 </Button>
                 {myProfile?.resume && (
                   <Button asChild variant="secondary" size="lg">
-                    <a href={myProfile.resume} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={myProfile.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Download Resume
                     </a>
                   </Button>
@@ -81,7 +85,9 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {Object.entries(skillsByCategory).map(([category, skills]) => (
               <div key={category} className="border rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4 capitalize">{category}</h3>
+                <h3 className="text-xl font-semibold mb-4 capitalize">
+                  {category}
+                </h3>
                 <div className="space-y-4">
                   {skills.map((skill) => (
                     <div key={skill.id} className="space-y-2">
@@ -120,7 +126,10 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProjects.map((project) => (
-              <div key={project.id} className="border rounded-lg overflow-hidden bg-background shadow-sm hover:shadow-md transition-shadow">
+              <div
+                key={project.id}
+                className="border rounded-lg overflow-hidden bg-background shadow-sm hover:shadow-md transition-shadow"
+              >
                 {project.image && (
                   <div className="relative w-full h-48">
                     <Image
@@ -132,8 +141,12 @@ export default async function HomePage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                  <p className="text-muted-foreground mb-4">{project.description}</p>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {project.description}
+                  </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies?.map((tech, index) => (
                       <span
@@ -147,14 +160,22 @@ export default async function HomePage() {
                   <div className="flex gap-4">
                     {project.demoUrl && (
                       <Button asChild size="sm" variant="default">
-                        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           Live Demo
                         </a>
                       </Button>
                     )}
                     {project.githubUrl && (
                       <Button asChild size="sm" variant="outline">
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           GitHub
                         </a>
                       </Button>
@@ -172,8 +193,9 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 max-w-3xl text-center">
           <h2 className="text-3xl font-bold mb-6">Get In Touch</h2>
           <p className="text-lg mb-8">
-            I'm currently available for freelance work or full-time positions. 
-            If you have a project that needs some creative work, feel free to contact me.
+            I&apos;m currently available for freelance work or full-time
+            positions. If you have a project that needs some creative work, feel
+            free to contact me.
           </p>
           <div className="flex justify-center gap-4">
             <Button asChild size="lg">
@@ -181,9 +203,7 @@ export default async function HomePage() {
             </Button>
             {myProfile?.email && (
               <Button asChild variant="outline" size="lg">
-                <a href={`mailto:${myProfile.email}`}>
-                  {myProfile.email}
-                </a>
+                <a href={`mailto:${myProfile.email}`}>{myProfile.email}</a>
               </Button>
             )}
           </div>
