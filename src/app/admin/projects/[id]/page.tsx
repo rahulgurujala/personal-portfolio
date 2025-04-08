@@ -15,10 +15,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2, ArrowLeft, Plus, X } from "lucide-react";
+import { use } from "react";
 
-export default function ProjectEditor({ params }: { params: { id: string } }) {
+export default function ProjectEditor({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const router = useRouter();
-  const isNew = params.id === "new";
+  const isNew = id === "new";
 
   const [project, setProject] = useState({
     title: "",
@@ -40,7 +46,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
       // Fetch existing project data
       const fetchProject = async () => {
         try {
-          const response = await fetch(`/api/projects/${params.id}`);
+          const response = await fetch(`/api/projects/${id}`);
           const data = await response.json();
 
           if (data.success) {
@@ -57,7 +63,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
     } else {
       setLoading(false);
     }
-  }, [isNew, params.id]);
+  }, [isNew, id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -92,7 +98,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
     setSaving(true);
 
     try {
-      const url = isNew ? "/api/projects" : `/api/projects/${params.id}`;
+      const url = isNew ? "/api/projects" : `/api/projects/${id}`;
       const method = isNew ? "POST" : "PUT";
 
       const response = await fetch(url, {
