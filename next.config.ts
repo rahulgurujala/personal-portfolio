@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["media.licdn.com"],
+    domains: ["media.licdn.com", "raw.githubusercontent.com"],
   },
   typescript: {
     // !! WARN !!

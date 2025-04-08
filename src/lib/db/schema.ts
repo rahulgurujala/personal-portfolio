@@ -46,6 +46,7 @@ export const projects = pgTable("projects", {
   featured: boolean("featured").default(false),
   order: integer("order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Blog posts

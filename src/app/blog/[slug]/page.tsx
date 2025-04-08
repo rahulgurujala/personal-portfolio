@@ -13,10 +13,11 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
+  const { slug } = await params;
   const post = await db
     .select()
     .from(blogPosts)
-    .where(eq(blogPosts.slug, params.slug))
+    .where(eq(blogPosts.slug, slug))
     .limit(1);
 
   if (!post || post.length === 0 || !post[0].published) {
@@ -29,8 +30,9 @@ export async function generateMetadata({
 
   const currentPost = post[0];
   const postTitle = `${currentPost.title} | Developer Portfolio`;
-  const postDescription = currentPost.excerpt || `Read ${currentPost.title} on Developer Portfolio`;
-  
+  const postDescription =
+    currentPost.excerpt || `Read ${currentPost.title} on Developer Portfolio`;
+
   return seoMetadata({
     title: postTitle,
     description: postDescription,
@@ -44,10 +46,11 @@ export default async function BlogPostPage({
 }: {
   params: { slug: string };
 }) {
+  const { slug } = await params;
   const post = await db
     .select()
     .from(blogPosts)
-    .where(eq(blogPosts.slug, params.slug))
+    .where(eq(blogPosts.slug, slug))
     .limit(1);
 
   if (!post || post.length === 0 || !post[0].published) {

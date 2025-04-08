@@ -106,7 +106,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="icon"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 1 }).run()
+          }
           className={editor.isActive("heading", { level: 1 }) ? "bg-muted" : ""}
         >
           <Heading1 className="h-4 w-4" />
@@ -115,7 +117,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="icon"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
           className={editor.isActive("heading", { level: 2 }) ? "bg-muted" : ""}
         >
           <Heading2 className="h-4 w-4" />
@@ -124,7 +128,9 @@ export function RichTextEditor({
           type="button"
           variant="ghost"
           size="icon"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
+          }
           className={editor.isActive("heading", { level: 3 }) ? "bg-muted" : ""}
         >
           <Heading3 className="h-4 w-4" />
@@ -190,12 +196,7 @@ export function RichTextEditor({
             </div>
           )}
         </div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={addImage}
-        >
+        <Button type="button" variant="ghost" size="icon" onClick={addImage}>
           <ImageIcon className="h-4 w-4" />
         </Button>
         <Button
@@ -251,7 +252,10 @@ export function RichTextEditor({
         </BubbleMenu>
       )}
 
-      <EditorContent editor={editor} className="prose dark:prose-invert max-w-none p-4" />
+      <EditorContent
+        editor={editor}
+        className="prose dark:prose-invert max-w-none p-4"
+      />
     </div>
   );
 }

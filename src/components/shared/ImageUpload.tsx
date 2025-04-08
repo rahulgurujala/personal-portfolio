@@ -75,6 +75,8 @@ export function ImageUpload({
       {value ? (
         <div className="relative">
           <Image
+            width={100}
+            height={100}
             src={value}
             alt="Uploaded image"
             className="max-h-64 rounded-md border object-contain w-full"

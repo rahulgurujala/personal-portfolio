@@ -196,7 +196,6 @@ export default function BlogPostEditor({
                 onChange={(url) =>
                   setPost((prev) => ({ ...prev, coverImage: url }))
                 }
-                label="Cover Image"
               />
             </div>
 
