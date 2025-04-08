@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { blogPosts } from "@/lib/db/schema";
+import { blogPosts, profile } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 
 // GET a specific blog post by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     // Check if ID is a number (database ID) or string (slug)
-    const isNumeric = /^\d+$/.test(params.id);
+    const isNumeric = /^\d+$/.test(context.params.id);
 
     let post;
     if (isNumeric) {
@@ -19,14 +19,14 @@ export async function GET(
       post = await db
         .select()
         .from(blogPosts)
-        .where(eq(blogPosts.id, parseInt(params.id)))
+        .where(eq(blogPosts.id, parseInt(context.params.id)))
         .limit(1);
     } else {
       // Find by slug
       post = await db
         .select()
         .from(blogPosts)
-        .where(eq(blogPosts.slug, params.id))
+        .where(eq(blogPosts.slug, context.params.id))
         .limit(1);
     }
 
@@ -50,13 +50,27 @@ export async function GET(
 // PUT to update a blog post (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const userProfile = await db
+      .select()
+      .from(profile)
+      .where(eq(profile.userId, userId))
+      .then(rows => rows[0] || null);
+
+    if (!userProfile?.isAdmin) {
+      return NextResponse.json(
+        { error: "Admin access required" },
+        { status: 403 }
+      );
     }
 
     const body = await request.json();
@@ -73,7 +87,7 @@ export async function PUT(
     const existingPost = await db
       .select()
       .from(blogPosts)
-      .where(eq(blogPosts.id, parseInt(params.id)))
+      .where(eq(blogPosts.id, parseInt(context.params.id)))
       .limit(1);
 
     if (!existingPost || existingPost.length === 0) {
@@ -111,7 +125,7 @@ export async function PUT(
         published: body.published || false,
         updatedAt: new Date(),
       })
-      .where(eq(blogPosts.id, parseInt(params.id)))
+      .where(eq(blogPosts.id, parseInt(context.params.id)))
       .returning();
 
     return NextResponse.json({
@@ -130,7 +144,7 @@ export async function PUT(
 // DELETE a blog post (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -139,11 +153,25 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Check if user is admin
+    const userProfile = await db
+      .select()
+      .from(profile)
+      .where(eq(profile.userId, userId))
+      .then(rows => rows[0] || null);
+
+    if (!userProfile?.isAdmin) {
+      return NextResponse.json(
+        { error: "Admin access required" },
+        { status: 403 }
+      );
+    }
+
     // Check if post exists
     const existingPost = await db
       .select()
       .from(blogPosts)
-      .where(eq(blogPosts.id, parseInt(params.id)))
+      .where(eq(blogPosts.id, parseInt(context.params.id)))
       .limit(1);
 
     if (!existingPost || existingPost.length === 0) {
@@ -154,7 +182,7 @@ export async function DELETE(
     }
 
     // Delete post
-    await db.delete(blogPosts).where(eq(blogPosts.id, parseInt(params.id)));
+    await db.delete(blogPosts).where(eq(blogPosts.id, parseInt(context.params.id)));
 
     return NextResponse.json({
       success: true,

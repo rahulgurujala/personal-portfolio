@@ -49,7 +49,7 @@ export function Header() {
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="font-bold text-xl">
-            Portfolio
+            RG
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
