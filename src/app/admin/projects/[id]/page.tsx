@@ -7,13 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Loader2, ArrowLeft, Plus, X } from "lucide-react";
 
 export default function ProjectEditor({ params }: { params: { id: string } }) {
   const router = useRouter();
   const isNew = params.id === "new";
-  
+
   const [project, setProject] = useState({
     title: "",
     description: "",
@@ -24,11 +30,11 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
     featured: false,
     order: 0,
   });
-  
+
   const [newTech, setNewTech] = useState("");
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
-  
+
   useEffect(() => {
     if (!isNew) {
       // Fetch existing project data
@@ -36,7 +42,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
         try {
           const response = await fetch(`/api/projects/${params.id}`);
           const data = await response.json();
-          
+
           if (data.success) {
             setProject(data.project);
           }
@@ -46,47 +52,49 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
           setLoading(false);
         }
       };
-      
+
       fetchProject();
     } else {
       setLoading(false);
     }
   }, [isNew, params.id]);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setProject(prev => ({ ...prev, [name]: value }));
+    setProject((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSwitchChange = (checked: boolean) => {
-    setProject(prev => ({ ...prev, featured: checked }));
+    setProject((prev) => ({ ...prev, featured: checked }));
   };
-  
+
   const addTechnology = () => {
     if (newTech.trim() && !project.technologies.includes(newTech.trim())) {
-      setProject(prev => ({
+      setProject((prev) => ({
         ...prev,
-        technologies: [...prev.technologies, newTech.trim()]
+        technologies: [...prev.technologies, newTech.trim()],
       }));
       setNewTech("");
     }
   };
-  
+
   const removeTechnology = (tech: string) => {
-    setProject(prev => ({
+    setProject((prev) => ({
       ...prev,
-      technologies: prev.technologies.filter(t => t !== tech)
+      technologies: prev.technologies.filter((t) => t !== tech),
     }));
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    
+
     try {
       const url = isNew ? "/api/projects" : `/api/projects/${params.id}`;
       const method = isNew ? "POST" : "PUT";
-      
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -94,9 +102,9 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
         },
         body: JSON.stringify(project),
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         router.push("/admin/projects");
       }
@@ -106,7 +114,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
       setSaving(false);
     }
   };
-  
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -114,16 +122,18 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" onClick={() => router.back()}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-3xl font-bold">{isNew ? "Create New Project" : "Edit Project"}</h1>
+        <h1 className="text-3xl font-bold">
+          {isNew ? "Create New Project" : "Edit Project"}
+        </h1>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-8">
         <Card>
           <CardHeader>
@@ -141,7 +151,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -154,7 +164,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="image">Image URL</Label>
               <Input
@@ -165,7 +175,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 placeholder="https://example.com/image.jpg"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="demoUrl">Demo URL</Label>
               <Input
@@ -176,7 +186,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 placeholder="https://demo.example.com"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="githubUrl">GitHub URL</Label>
               <Input
@@ -187,7 +197,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 placeholder="https://github.com/username/repo"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="order">Display Order</Label>
               <Input
@@ -199,15 +209,18 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 min="0"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label>Technologies</Label>
               <div className="flex flex-wrap gap-2 mb-2">
-                {project.technologies.map(tech => (
-                  <div key={tech} className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full flex items-center gap-1">
+                {project.technologies.map((tech) => (
+                  <div
+                    key={tech}
+                    className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full flex items-center gap-1"
+                  >
                     {tech}
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => removeTechnology(tech)}
                       className="text-secondary-foreground/70 hover:text-secondary-foreground"
                     >
@@ -222,7 +235,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                   onChange={(e) => setNewTech(e.target.value)}
                   placeholder="Add technology"
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       addTechnology();
                     }
@@ -233,7 +246,7 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                 </Button>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-2 pt-4">
               <Switch
                 id="featured"
@@ -244,7 +257,11 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button type="button" variant="outline" onClick={() => router.back()}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.back()}
+            >
               Cancel
             </Button>
             <Button type="submit" disabled={saving}>
@@ -253,8 +270,10 @@ export default function ProjectEditor({ params }: { params: { id: string } }) {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
+              ) : isNew ? (
+                "Create Project"
               ) : (
-                isNew ? "Create Project" : "Update Project"
+                "Update Project"
               )}
             </Button>
           </CardFooter>

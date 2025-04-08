@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 
 export default function ProfileEditor() {
@@ -21,16 +27,16 @@ export default function ProfileEditor() {
     twitter: "",
     resume: "",
   });
-  
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await fetch("/api/profile");
         const data = await response.json();
-        
+
         if (data.success && data.profile) {
           // Only update state if profile data exists
           setProfile({
@@ -51,19 +57,21 @@ export default function ProfileEditor() {
         setLoading(false);
       }
     };
-    
+
     fetchProfile();
   }, []);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setProfile(prev => ({ ...prev, [name]: value }));
+    setProfile((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    
+
     try {
       const response = await fetch("/api/profile", {
         method: "PUT",
@@ -72,9 +80,9 @@ export default function ProfileEditor() {
         },
         body: JSON.stringify(profile),
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         // Show success message
         alert("Profile updated successfully!");

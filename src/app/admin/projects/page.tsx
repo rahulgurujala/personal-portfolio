@@ -13,10 +13,7 @@ import {
 import { formatDistance } from "date-fns";
 
 export default async function AdminProjects() {
-  const allProjects = await db
-    .select()
-    .from(projects)
-    .orderBy(projects.order);
+  const allProjects = await db.select().from(projects).orderBy(projects.order);
 
   return (
     <div className="space-y-6">
