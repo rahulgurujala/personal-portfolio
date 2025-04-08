@@ -1,8 +1,11 @@
-import { UserButton } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
-import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { profile } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function AdminLayout({
   children,
@@ -14,6 +17,18 @@ export default async function AdminLayout({
   // Redirect if not logged in
   if (!user) {
     redirect("/sign-in");
+  }
+
+  // Check if user is admin
+  const userProfile = await db
+    .select()
+    .from(profile)
+    .where(eq(profile.userId, user.id))
+    .then((rows) => rows[0] || null);
+
+  // If no profile or not admin, redirect to home
+  if (!userProfile?.isAdmin) {
+    redirect("/");
   }
 
   return (

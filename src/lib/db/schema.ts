@@ -10,7 +10,7 @@ import {
 // About me section
 export const profile = pgTable("profile", {
   id: serial("id").primaryKey(),
-  userId: text("user_id").notNull().unique(), // Add this field for Clerk userId
+  userId: text("user_id").notNull().unique(),
   name: text("name").notNull(),
   title: text("title").notNull(),
   bio: text("bio").notNull(),
@@ -20,7 +20,8 @@ export const profile = pgTable("profile", {
   linkedin: text("linkedin"),
   twitter: text("twitter"),
   resume: text("resume"),
-  createdAt: timestamp("created_at").defaultNow(), // Add createdAt field
+  isAdmin: boolean("is_admin").default(false), // Add this field
+  createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 

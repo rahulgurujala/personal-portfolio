@@ -15,9 +15,24 @@ export function Header() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Only set admin status after auth is loaded
+    // Check if user is admin
+    const checkAdminStatus = async () => {
+      if (userId) {
+        try {
+          const response = await fetch("/api/check-admin");
+          const data = await response.json();
+          setIsAdmin(data.isAdmin);
+        } catch (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+    };
+
     if (isLoaded) {
-      setIsAdmin(!!userId);
+      checkAdminStatus();
     }
   }, [isLoaded, userId]);
 
