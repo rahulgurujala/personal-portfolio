@@ -17,10 +17,16 @@ import {
 import { Loader2, ArrowLeft, RefreshCw } from "lucide-react";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
 import { ImageUpload } from "@/components/shared/ImageUpload";
+import { use } from "react";
 
-export default function BlogPostEditor({ params }: { params: { id: string } }) {
+export default function BlogPostEditor({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const router = useRouter();
-  const isNew = params.id === "new";
+  const isNew = id === "new";
 
   const [post, setPost] = useState({
     title: "",
@@ -39,7 +45,7 @@ export default function BlogPostEditor({ params }: { params: { id: string } }) {
       // Fetch existing post data
       const fetchPost = async () => {
         try {
-          const response = await fetch(`/api/blog/${params.id}`);
+          const response = await fetch(`/api/blog/${id}`);
           const data = await response.json();
 
           if (data.success) {
@@ -54,7 +60,7 @@ export default function BlogPostEditor({ params }: { params: { id: string } }) {
 
       fetchPost();
     }
-  }, [isNew, params.id]);
+  }, [isNew, id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -85,7 +91,7 @@ export default function BlogPostEditor({ params }: { params: { id: string } }) {
     setSaving(true);
 
     try {
-      const url = isNew ? "/api/blog" : `/api/blog/${params.id}`;
+      const url = isNew ? "/api/blog" : `/api/blog/${id}`;
       const method = isNew ? "POST" : "PUT";
 
       const response = await fetch(url, {
