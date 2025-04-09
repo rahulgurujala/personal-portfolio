@@ -18,7 +18,7 @@ A full-featured developer portfolio and blog built with Next.js, Drizzle ORM, an
 
 ## Demo
 
-Check out the live demo: [https://personal-portfolio-alpha-virid.vercel.app/](https://personal-portfolio-alpha-virid.vercel.app/)
+Check out the live demo: [https://rahulgurujala.vercel.app/](https://rahulgurujala.vercel.app/)
 
 ## Screenshots
 
