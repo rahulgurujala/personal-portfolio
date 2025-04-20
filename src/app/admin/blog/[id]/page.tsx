@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Loader2, ArrowLeft, RefreshCw } from "lucide-react";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
-import { ImageUpload } from "@/components/shared/ImageUpload";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 import { use } from "react";
 
 export default function BlogPostEditor({
@@ -190,13 +190,19 @@ export default function BlogPostEditor({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="coverImage">Cover Image</Label>
-              <ImageUpload
-                value={post.coverImage || ""}
-                onChange={(url) =>
-                  setPost((prev) => ({ ...prev, coverImage: url }))
-                }
-              />
+              <div className="space-y-4">
+                {/* ... other form fields ... */}
+
+                <ImageUploader
+                  value={post.coverImage || ""}
+                  onChange={(url) =>
+                    setPost((prev) => ({ ...prev, coverImage: url }))
+                  }
+                  label="Cover Image"
+                />
+
+                {/* ... other form fields ... */}
+              </div>
             </div>
 
             <div className="space-y-2">

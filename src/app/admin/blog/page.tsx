@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDistance } from "date-fns";
+import DeleteBlogButton from "@/components/admin/DeleteBlogButton";
 
 export default async function AdminBlogPosts() {
   const posts = await db
@@ -75,6 +76,7 @@ export default async function AdminBlogPosts() {
                       View
                     </Link>
                   </Button>
+                  <DeleteBlogButton id={post.id} title={post.title} />
                 </div>
               </TableCell>
             </TableRow>

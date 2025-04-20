@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cloudinary } from "@/lib/cloudinary";
 import { auth } from "@clerk/nextjs/server";
+import { UploadApiResponse } from "cloudinary";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,27 +23,34 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     // Convert buffer to base64
-    const base64 = buffer.toString("base64");
-    const dataURI = `data:${file.type};base64,${base64}`;
+    const base64String = buffer.toString("base64");
+    const dataURI = `data:${file.type};base64,${base64String}`;
 
-    // Upload to Cloudinary
-    const result = await new Promise((resolve, reject) => {
+    // Upload to Cloudinary with proper typing
+    const result = await new Promise<UploadApiResponse>((resolve, reject) => {
       cloudinary.uploader.upload(
         dataURI,
         {
           folder: "portfolio",
+          resource_type: "auto",
         },
         (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result as UploadApiResponse);
+          }
         }
       );
     });
 
-    // @ts-expect-error - Cloudinary upload result type is not properly typed
-    return NextResponse.json({ success: true, url: result.secure_url });
+    return NextResponse.json({
+      success: true,
+      url: result.secure_url,
+      publicId: result.public_id,
+    });
   } catch (error) {
-    console.error("Error uploading image:", error);
+    console.error("Error uploading to Cloudinary:", error);
     return NextResponse.json(
       { error: "Failed to upload image" },
       { status: 500 }

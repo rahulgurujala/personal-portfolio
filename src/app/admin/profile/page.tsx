@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export default function ProfileEditor() {
   // Initialize with empty values to prevent null errors
@@ -108,7 +109,21 @@ export default function ProfileEditor() {
         <CardHeader>
           <CardTitle>Profile Information</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
+          {/* Avatar Upload Section */}
+          <div className="space-y-2">
+            <Label>Profile Avatar</Label>
+            <div className="flex justify-center mb-4">
+              <ImageUploader
+                value={profile.avatar}
+                onChange={(url) =>
+                  setProfile((prev) => ({ ...prev, avatar: url }))
+                }
+                label="Avatar Image"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
@@ -139,18 +154,8 @@ export default function ProfileEditor() {
               name="bio"
               value={profile.bio}
               onChange={handleChange}
-              rows={5}
               required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="avatar">Avatar URL</Label>
-            <Input
-              id="avatar"
-              name="avatar"
-              value={profile.avatar}
-              onChange={handleChange}
+              rows={5}
             />
           </div>
 
@@ -215,7 +220,7 @@ export default function ProfileEditor() {
                 Saving...
               </>
             ) : (
-              "Save Changes"
+              "Save Profile"
             )}
           </Button>
         </CardFooter>

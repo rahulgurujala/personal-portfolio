@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Loader2, ArrowLeft, Plus, X } from "lucide-react";
 import { use } from "react";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export default function ProjectEditor({
   params,
@@ -173,12 +174,10 @@ export default function ProjectEditor({
 
             <div className="space-y-2">
               <Label htmlFor="image">Image URL</Label>
-              <Input
-                id="image"
-                name="image"
+              <ImageUploader
                 value={project.image || ""}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
+                onChange={(url) => setProject((prev) => ({ ...prev, image: url }))}
+                label="Project Image"
               />
             </div>
 

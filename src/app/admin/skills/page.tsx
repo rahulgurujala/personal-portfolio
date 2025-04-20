@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import DeleteSkillButton from "@/components/admin/DeleteSkillButton";
 
 export default async function AdminSkills() {
   const allSkills = await db.select().from(skills).orderBy(skills.name);
@@ -45,6 +46,7 @@ export default async function AdminSkills() {
                   <Button asChild size="sm" variant="outline">
                     <Link href={`/admin/skills/${skill.id}`}>Edit</Link>
                   </Button>
+                  <DeleteSkillButton id={skill.id} name={skill.name} />
                 </div>
               </TableCell>
             </TableRow>
