@@ -86,3 +86,14 @@ export const visitorStats = pgTable("visitor_stats", {
   count: integer("count").default(0),
   lastVisit: timestamp("last_visit").defaultNow(),
 });
+
+// Contact messages table
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  read: boolean("read").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});

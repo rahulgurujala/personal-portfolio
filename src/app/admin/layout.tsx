@@ -60,6 +60,9 @@ export default async function AdminLayout({
             <Button asChild variant="ghost" className="w-full justify-start">
               <Link href="/admin/settings">Settings</Link>
             </Button>
+            <Button asChild variant="ghost" className="w-full justify-start">
+              <Link href="/admin/messages">Messages</Link>
+            </Button>
           </nav>
 
           <div className="pt-4 border-t">
